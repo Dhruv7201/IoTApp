@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vending Machine User Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.18/dist/sweetalert2.min.css" rel="stylesheet">
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e0e4da;
+    }
+    .container {
+      color: #212020;
+      max-width: 100%;
+      height: 100vh;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 0px;
+      background-color: #FBFFF6;
+    }
+    .start-vending-button {
+      color: #fff;
+      border: none;
+      padding: 10px 40px;
+      font-size: 18px;
+      flex-shrink: 0;
+      cursor: pointer;
+      border-radius: 4px;
+      background: #58A833;
+    }
+    h2, h3 {
+      margin: 0;
+      padding: 0;
+      color: #000;
+    }
+    h4{
+      color: #212020;
+      font-size: 21px;
+      font-weight: 500;
+    }
+    hr {
+      margin: 10px 0;
+      border: none;
+      border-top: 1px solid #000;
+    }
+    #total {
+      font-weight: bold;
+    }
+    .cart-item span {
+      font-size: 22px;
+      font-weight: bold;
+    }
+    .cart-item {
+      font-size: 21px;
+      color: #fff;
+    }
+    .reset-button {
+      font-size: 18px;
+      padding: 10px 40px;
+      border-radius: 4px;
+      color: #6D6060;
+      text-align: center;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      border: 2px solid #6D6060;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    img {
+      width: 140px;
+      height: 140px;
+      padding: 0px;
+      flex-shrink: 0;
+      border-radius: 6px;
+      background: url(<path-to-image>), lightgray 50% / cover no-repeat;
+      box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    }
+    .row {
+    --bs-gutter-x: 0;
+    }
+  select {
+    height:30px;
+    width:80px;
+    font-size: 20px;
+    border-radius: 6px;
+    text-align: center;
+    size: 10;
+  }
+  option{
+    font-size: 14px;
+  }
+.quantity-field {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 40px;
+  margin: 0 auto;
+}
+.quantity-field .value-button{
+  border: 1px solid #ddd;
+  margin: 0px;
+  width: 40px;
+  height: 100%;
+  font-size: 25px;
+  padding: 0;
+  background: #eee;
+  outline: none;
+  cursor: pointer;
+}
+.quantity-field .value-button:hover {
+  background: rgb(230, 230, 230);
+}
+.quantity-field .value-button:active{
+  background: rgb(210, 210, 210);
+}
+.quantity-field .decrease-button {
+    border-radius: 6px;
+    background-color: #D9D9D9;
+    color: #6D6060;
+}
+.quantity-field .increase-button {
+  border-radius: 6px;
+  background-color: #58A833;
+  color: #fff;
+}
+.quantity-field .increase-button:hover {
+  border-radius: 6px;
+  background-color: #67bd40;
+  color: #fff;
+}
+.quantity-field .number{
+  display: inline-block;
+  text-align: center;
+  border: none;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  margin: 0px;
+  width: 40px;
+  height: 100%;
+  line-height: 36px;
+  font-size: 15pt;
+  box-sizing: border-box;
+  background: white;
+  font-family: calibri;
+}
+.quantity-field .number::selection{
+  background: none;
+}
+.quantity-field .number {
+    text-align: center;
+    border: none;
+    width: 45px;
+    height: 40px;
+}
+#imageSlider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: none;
+  z-index: 9999;
+}
+.carousel-control-next,
+.carousel-control-prev {width: 5%;}
+.pressOrderButton {
+    position: absolute;
+    left: 40%;
+    bottom: 60px;
+    z-index: 1;
+    text-align: center;
+    width: 20%;
+    padding: 10px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #000000;
+    text-align: center;
+    background: #F7F7F7;
+    border: 0;
+    border-radius: 4px;
+    opacity: 1;
+    transition: opacity .15s ease;
+}
+  :disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+
+</style>
+</head>
+<body>
+  <div class="container">
+   <div id="productArea">
+  <form action="/vend" method="get" id="form_data">
+    <div class="row">
+      <div class="text-center">
+        <img id="logoImage" src="../static/logo.png" style="width: 148px;height: 136px;top: 80px;border-radius: 0px;text-align: center;background: #FBFFF6;
+          box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);">
+      </div>
+    </div>
+    <div class="row text-center mt-3"><h3 class="m-3" style="color:#EE6A23;font-weight:700">{{ heading }}</h3></div>
+	  <div class="row mb-3">
+      <div class="col text-center mt-4 mb-5">
+        <img src="../static/Group%2020.png">
+        <div class="clearfix my-2"></div>
+        <h4 class="mt-4">POMEGRANATE ARILS<br/> 100 GMS;</h4>
+        <div class="p-2 m-3"><h4 style="font-weight: 700;">MRP: <i class="fa fa-rupee" style="font-size:18px;color:#000"></i><span id="price1"></span></h4></div>
+        <div class="quantity-field">
+          <button type="button" class="value-button decrease-button js-decrement">-</button>
+           <input type="number" class="number" id="product_1_q" name="product_1_q" min=0 max=65 value="0">
+          <button type="button" class="value-button increase-button js-increment">+</button>
+        </div>
+      </div>
+      <div class="col text-center mt-4 mb-5">
+        <img src="../static/Group%2020.png" >
+        <div class="clearfix my-2"></div>
+        <h4 class="mt-4">POMEGRANATE ARILS<br/> 100 GMS;</h4>
+        <div class="p-2 m-3"><h4 style="font-weight: 700;">MRP: <i class="fa fa-rupee" style="font-size:18px;color:#000"></i><span id="price2"></span></h4></div>
+        <div class="quantity-field">
+          <button type="button" class="value-button decrease-button js-decrement">-</button>
+           <input type="number" class="number" id="product_2_q" name="product_2_q" min=0 max=65 value="0">
+          <button type="button" class="value-button increase-button js-increment">+</button>
+        </div>
+      </div>
+      <div class="col text-center mt-4 mb-5">
+        <img src="../static/Group%2021.png" >
+        <div class="clearfix my-2"></div>
+        <h4 class="mt-4">POMEGRANATE JUICE<br/> 200 ML;</h4>
+        <div class="p-2 m-3"><h4 style="font-weight: 700;">MRP: <i class="fa fa-rupee" style="font-size:18px;color:#000"></i><span id="price3"></span></h4></div>
+        <div class="quantity-field">
+          <button type="button" class="value-button decrease-button js-decrement">-</button>
+           <input type="number" class="number" id="product_3_q" name="product_3_q" min=0 max=65 value="0">
+          <button type="button" class="value-button increase-button js-increment">+</button>
+        </div>
+      </div>
+      <div class="col text-center mt-4 mb-5">
+        <img src="../static/Group%2023.png" >
+        <div class="clearfix my-2"></div>
+        <h4 class="mt-4">PINEAPPLE JUICE<br/> 200 ML;</h4>
+        <div class="p-2 m-3"><h4 style="font-weight: 700;">MRP: <i class="fa fa-rupee" style="font-size:18px;color:#000"></i><span id="price4"></span></h4></div>
+        <div class="quantity-field">
+          <button type="button" class="value-button decrease-button js-decrement">-</button>
+           <input type="number" class="number" id="product_4_q" name="product_4_q" min=0 max=65 value="0">
+          <button type="button" class="value-button increase-button js-increment">+</button>
+        </div>
+      </div>
+      <div class="col text-center mt-4 mb-5">
+        <img src="../static/Group%2024.png" >
+        <div class="clearfix my-2"></div>
+        <h4 class="mt-4">TRIMMED TENDER<br/> COCONUT-1 UNIT</h4>
+        <div class="p-2 m-3"><h4 style="font-weight: 700;">MRP: <i class="fa fa-rupee" style="font-size:18px;color:#000"></i><span id="price5"></span></h4></div>
+        <div class="quantity-field">
+          <button type="button" class="value-button decrease-button js-decrement">-</button>
+           <input type="number" class="number" id="product_5_q" name="product_5_q" value="0">
+          <button type="button" class="value-button increase-button js-increment">+</button>
+          </button>
+        </div>
+      </div>
+	  </div>
+        <hr/>
+        <div class="text-center m-4">
+          <button type="submit" id="submitButton" class="start-vending-button mx-3" onclick="handleChange()" value="Submit">SUBMIT</button>
+          <button type="button" class="reset-button mx-3" onclick="resetCart();">RESET</button>
+      </div>
+    </form>
+  </div>
+
+ <div id="imageSlider">
+   <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+     <div class="carousel-inner">
+       <div class="carousel-item active" data-bs-interval="30000">
+         <img src="../static/slider-image-1.jpg" class="d-block w-100" alt="..." style="width: 100%;height: 100vh;border-radius: 0px;">
+       </div>
+       <div class="carousel-item" data-bs-interval="30000">
+         <img src="../static/slider-image-2.jpg" class="d-block w-100" alt="..." style="width: 100%;height: 100vh;border-radius: 0px;">
+       </div>
+       <div class="carousel-item" data-bs-interval="30000">
+         <img src="../static/slider-image-3.jpg" class="d-block w-100" alt="..." style="width: 100%;height: 100vh;border-radius: 0px;">
+       </div>
+       <div class="carousel-item" data-bs-interval="30000">
+         <img src="../static/slider-image-4.jpg" class="d-block w-100" alt="..." style="width: 100%;height: 100vh;border-radius: 0px;">
+       </div>
+       <div class="carousel-item" data-bs-interval="30000">
+         <img src="../static/slider-image-5.jpg" class="d-block w-100" alt="..." style="width: 100%;height: 100vh;border-radius: 0px;">
+       </div>
+       <div class="carousel-item" data-bs-interval="30000">
+         <img src="../static/slider-image-6.jpg" class="d-block w-100" alt="..." style="width: 100%;height: 100vh;border-radius: 0px;">
+       </div>
+       <div>
+        <a href="/"><button class="pressOrderButton">PRESS TO ORDER</button></a>
+       </div>
+     </div>
+     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+  </div>
+ </div>
+
+  </div>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script>
+var result = {{result}}
+<!--var result = [2,3,4,5,6]-->
+var availableQuantities = result; 
+console.log(result)
+var clickCount = 0;
+$(".js-increment").click(function() {
+  var inputField = $(this).siblings('.number');
+  console.log('inputField',inputField)
+  var currentValue = parseInt(inputField.val());
+  console.log('currentValue',currentValue)
+  var productIndex = $(".js-increment").index($(this));
+  console.log('productIndex',productIndex)
+  var availableQuantity = availableQuantities[productIndex];
+  console.log('availableQuantity',availableQuantity)
+
+  if(availableQuantity == 0){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Out Of Stock!',
+      confirmButtonColor: '#58A833',
+    })
+  }
+  else{
+    if (currentValue < availableQuantity) {
+      var incrementedValue = currentValue + 1;
+      inputField.val(incrementedValue);
+    }
+  }
+});
+var price_list = {{ price_list }};
+for (var i = 0; i < price_list.length; i++) {
+  document.getElementById("price"+(i+1)).innerHTML = price_list[i];
+}
+
+$(".js-decrement").click(function() {
+  var inputField = $(this).siblings('.number');
+  var currentValue = parseInt(inputField.val());
+  var decrementedValue = currentValue > 0 ? currentValue - 1 : 0;
+  inputField.val(decrementedValue);
+});
+
+function resetCart() {
+    $(":input[type='number']").val(0);
+}
+
+var imageSlider = document.getElementById('imageSlider');
+var timer;
+var inactiveTime = 300000; 
+function startTimer() {
+  timer = setTimeout(startSlider, inactiveTime);
+}
+function resetTimer() {
+  document.getElementById("imageSlider").style.display = 'none';
+  clearTimeout(timer);
+  startTimer();
+}
+function startSlider() {
+  console.log("Slider started after 30 seconds of inactivity");
+  document.getElementById("imageSlider").style.display = 'block';
+  document.addEventListener('keydown', resetTimer);
+}
+document.addEventListener('keydown', resetTimer);
+
+startTimer();
+$(document).ready(function() {
+  document.getElementById('logoImage').addEventListener('click', function() {
+    clickCount++;
+    if (clickCount === 10) {
+      window.location.href = "/admin";
+    }
+  });
+
+  document.addEventListener('click', function(event) {
+    var target = event.target;
+    if (!target.matches('#logoImage')) {
+      clickCount = 0;
+    }
+  });
+});
+$(document).ready(function() {
+  $(document).on('contextmenu', function(e) {
+    e.preventDefault();
+  });
+});
+
+  document.addEventListener('DOMContentLoaded', function() {
+  var submitButton = document.getElementById('submitButton');
+  var isButtonDisabled = false;
+
+  submitButton.addEventListener('click', function(event) {
+    if (isButtonDisabled) {
+      event.preventDefault(); // Prevent form submission if the button is disabled
+      return;
+    }
+
+    isButtonDisabled = true;
+    document.getElementById("submitButton").style.opacity = "0.5";
+
+    // Enable the button after 5 seconds
+    setTimeout(function() {
+      isButtonDisabled = false;
+      submitButton.disabled = false;
+      submitButton.innerText = 'SUBMIT';
+    }, 5000);
+  });
+});
+
+</script>
+<!--  zoom prevention-->
+<script type="text/javascript">
+document.addEventListener('touchmove', function (event) {
+  if (event.scale !== 1) { event.preventDefault(); }
+}, { passive: false });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.18/dist/sweetalert2.all.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+  body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+    .container {
+      max-width: 100%;
+      height: 100vh;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      color: #212020;
+      background-color: #FBFFF6;
+    }
+</style>
+</head>
+<body>
+  <div class="container text-center">
+    <img src="../static/logo.png" style="width: 148px;height: 136px;top: 80px;border-radius: 0px;text-align: center;background: #FBFFF6;
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);">
+    <div id="countdown" class="mt-5"></div>
+    <div class="mt-5"><i class="fa fa-warning" style="font-size:48px;color:rgb(227 144 4)"></i></div>
+    <h1 style="color: red;text-align: center;margin-top: 50px;">Payment Failed</h1>
+    <form action="/" method="get">
+      <button type="submit" class="btn btn-primary mt-5 mb-5">Return to Home Page</button>
+    </form>
+  </div>
+  <script>
+   var countdownDuration = .5 * 60 * 1000;
+  var startTime = new Date().getTime();
+  var endTime = startTime + countdownDuration;
+  var countdownTimer = setInterval(function() {
+  var now = new Date().getTime();
+  var remainingTime = endTime - now;
+  var minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+  var countdownElement = document.getElementById("countdown");
+  countdownElement.innerHTML = "0" + minutes + "m " + seconds + "s ";
+  if (remainingTime < 0) {
+    clearInterval(countdownTimer);
+    countdownElement.innerHTML = "EXPIRED";
+    location.href = '/';
+  }
+}, 1000);
+  </script>
+</body>
+</html>

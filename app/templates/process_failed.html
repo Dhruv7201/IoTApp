@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ProcessFailed</title>
+    <style>
+        div#container {
+            width: 400px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        img {
+            width: 165px;
+            height: 140px;
+            padding: 15px;
+            flex-shrink: 0;
+            border-radius: 10px; /* Changed from negative value to positive value */
+            padding-left: 115px;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <h1>Process Failed</h1>
+    <p>Sorry, but something went wrong.</p>
+    <p>{{response}}</p>
+    <p>{{error}}</p>
+    <img src="../static/logo.png" alt="FOVEO FRESH">
+    <form action="/" method="get">
+        <input type="submit" value="Home Page" id="homeButton">
+    </form>
+</div>
+<script>
+    // Automatically click the "Home Page" button every 15 seconds
+    setInterval(function() {
+        document.getElementById("homeButton").click();
+    }, 15000); // 15000 milliseconds = 15 seconds
+</script>
+</body>
+</html>

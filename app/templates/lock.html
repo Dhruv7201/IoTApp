@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.18/dist/sweetalert2.min.css" rel="stylesheet">
+    <title>iPhone Passcode Example</title>
+    <style>
+          * , *:before , *:after{
+          box-sizing : border-box;
+          -webkit-box-sizing : border-box;
+          -moz-box-sizing : border-box;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        text-align: center;
+      }
+       .container {
+        max-width: 100%;
+        height: 100vh;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        color: #fff;
+        border-radius: 5px;
+        color: #212020;
+        background-color: #FBFFF6;
+      }
+      span.clear{
+          width: 0;
+          height: 0;
+          clear: both;
+          display: block;
+      }
+      .passcode{
+          width: 213px;
+          margin: 120px auto 0 ;
+      }
+
+      .show{
+          display: block;
+      }
+
+      .passcode header{
+          width: 200px;
+          background : -webkit-linear-gradient(top, rgb(210, 212, 212) 46%, rgb(201, 205, 212) 51%);
+          background : -moz-linear-gradient(top, rgb(210, 212, 212) 46%, rgb(201, 205, 212) 51%);
+          margin: 10px auto 0;
+          text-align: center;
+          padding: 10px 0;
+          color : #5E6667;
+          border-radius: 3px 3px 0 0;
+          font: 1.2em ;
+          font-weight: bold;
+      }
+      .content{
+          width: 200px;
+          background : -webkit-linear-gradient(top, rgb(189, 203, 209) 23%, rgb(202, 211, 215) 40%, rgb(192, 203, 210) 63%, rgb(154, 176, 190) 83%);
+          background : -moz-linear-gradient(top, rgb(189, 203, 209) 23%, rgb(202, 211, 215) 40%, rgb(192, 203, 210) 63%, rgb(154, 176, 190) 83%);
+          opacity: .8;
+          margin: 0 auto;
+          border-radius: 0 0 3px 3px;
+      }
+
+      .pass div{
+          float: left;
+          width: 35px;
+          height: 35px;
+          margin: 7.5px;
+          background: #505057;
+          position: relative;
+      }
+      .pass div:before{
+          content: "";
+          position: absolute;
+          width: 15px;
+          height: 15px;
+          border-radius: 50%;
+          background: #fff;
+          top: 0;left: 0;bottom: 0;right: 0;
+          margin: auto;
+          display: none;
+      }
+
+      .pass .show:before{
+          display: block;
+      }
+
+      .keyboard div{
+          float: left;
+          width: 55px;
+          text-align: center;
+          padding: 7px;
+          background: #FFE9E9;
+          margin: 5.8px;
+          font-size: 1.2em;
+          border-radius: 3px;
+          cursor: default;
+          -webkit-transition: all .15s linear;
+          -moz-transition: all .15s linear;
+          transition: all .15s linear;
+      }
+
+      .keyboard div:active{
+          box-shadow : inset 0 0 5px 1px #3D3B3B;
+          background: #D4D7D8;
+          -webkit-transition: all .15s linear;
+          -moz-transition: all .15s linear;
+          transition: all .15s linear;
+      }
+      .text{
+          margin: 1px 0 1px 70px;
+          width: 130px;
+          padding: 11px 0;
+          text-align: center;
+          color : rgb(79,79,79);
+          font-size: 1.1em;
+          position: relative;
+          overflow: hidden;
+          letter-spacing: 1px;
+      }
+
+      .light{
+          position: absolute;
+          width: 15px;
+          height: 20px;
+          top: 10px;
+          left: 10px;
+          overflow: hidden;
+          -webkit-animation: light 5s linear infinite both;
+          -moz-animation: light 5s linear infinite both;
+          animation: light 5s linear infinite both;
+
+      }
+
+      .light:before {
+          content  : "Slide to unlock";
+          position : absolute;
+          color    : rgba(255, 255, 255, 0.54);
+          width    : 110px;
+          top      : 1px;
+          left     : 0;
+          letter-spacing: 1px;
+          -webkit-animation: show 5s linear infinite both;
+          -moz-animation: show 5s linear infinite both;
+          animation: show 5s linear infinite both;
+      }
+
+      @-webkit-keyframes light {
+          to{
+              left: 110px;
+          }
+      }
+
+      @-webkit-keyframes show {
+          to{
+              left: -100px;
+          }
+      }
+  </style>
+</head>
+<body>
+<div class="container">
+    <div class="passcode">
+    <header>
+        Enter Passcode
+    </header>
+    <div class="content">
+        <div class="pass">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <span class="clear"></span>
+        </div>
+        <div class="keyboard">
+            <div class="num1">1</div>
+            <div class="num2">2</div>
+            <div class="num3">3</div>
+            <div class="num4">4</div>
+            <div class="num5">5</div>
+            <div class="num6">6</div>
+            <div class="num7">7</div>
+            <div class="num8">8</div>
+            <div class="num9">9</div>
+            <div class="clear">Clear</div>
+            <div class="num0">0</div>
+            <div class="enter">Enter</div>
+            <span class="clear"></span>
+        </div>
+    </div>
+  </div>
+    <form action="/" method="get">
+        <button type="submit" class="btn btn-primary mt-4 mb-5">Return to Home Page</button>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.18/dist/sweetalert2.all.min.js"></script>
+
+<script>
+<!--$(document).ready(function() {-->
+<!--  var enteredPasscode = '';-->
+<!--  var expectedPasscode = '1234';-->
+
+<!--  $('.keyboard div:not(.clear, .enter)').on('click', function() {-->
+<!--    if (enteredPasscode.length < 4) {-->
+<!--      enteredPasscode += $(this).text();-->
+<!--      $('.pass div:nth-child(' + enteredPasscode.length + ')').addClass('show');-->
+<!--    }-->
+<!--  });-->
+
+<!--  $('.keyboard .clear').on('click', function() {-->
+<!--    if (enteredPasscode.length > 0) {-->
+<!--      enteredPasscode = enteredPasscode.slice(0, -1);-->
+<!--      $('.pass div:nth-child(' + (enteredPasscode.length + 1) + ')').removeClass('show');-->
+<!--    }-->
+<!--  });-->
+
+<!--  $('.keyboard .enter').on('click', function() {-->
+<!--    if (enteredPasscode.length === 4) {-->
+<!--      if (enteredPasscode === expectedPasscode) {-->
+<!--        $('.passcode').removeClass('show');-->
+<!--        location.href = '/admin_list';-->
+<!--      } else {-->
+<!--        // Passcode is incorrect-->
+<!--        $('.pass div').removeClass('show');-->
+<!--        enteredPasscode = '';-->
+<!--      }-->
+<!--    }-->
+<!--  });-->
+<!--});-->
+$(document).ready(function() {
+  var enteredPasscode = '';
+  var expectedPasscode = '1010';
+  var maxAttempts = 5;
+  var lockoutTime = 10 * 60 * 1000;
+
+  function lockScreen() {
+    var lockoutStartTime = Date.now();
+    localStorage.setItem('lockoutStartTime', lockoutStartTime);
+    $('.passcode').addClass('locked');
+  }
+
+  function unlockScreen() {
+    localStorage.removeItem('lockoutStartTime');
+    $('.passcode').removeClass('locked');
+  }
+
+  function updateAttempts() {
+    var attempts = localStorage.getItem('failedAttempts') || 0;
+    attempts++;
+    localStorage.setItem('failedAttempts', attempts);
+    if (attempts >= maxAttempts) {
+      lockScreen();
+      setTimeout(unlockScreen, lockoutTime);
+      Swal.fire({
+        title: 'Maximum Attempts Reached',
+        text: 'You have reached the maximum number of attempts. Your account is locked for 1 minute.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
+    else{
+      Swal.fire({
+        title: 'Incorrect Passcode',
+        text: 'You have ' + (maxAttempts - attempts) + ' attempts remaining.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
+  }
+
+  function resetAttempts() {
+    localStorage.removeItem('failedAttempts');
+  }
+
+  function checkLockout() {
+    var lockoutStartTime = localStorage.getItem('lockoutStartTime');
+    if (lockoutStartTime) {
+      var currentTime = Date.now();
+      var elapsedLockoutTime = currentTime - parseInt(lockoutStartTime, 10);
+      if (elapsedLockoutTime < lockoutTime) {
+        lockScreen();
+        var remainingTime = lockoutTime - elapsedLockoutTime;
+        setTimeout(unlockScreen, remainingTime);
+      } else {
+        unlockScreen();
+      }
+    }
+  }
+
+  function handlePasscodeEntry() {
+    if (enteredPasscode.length === 4) {
+      if (enteredPasscode === expectedPasscode) {
+        unlockScreen();
+        resetAttempts();
+        location.href = '/admin_list';
+      } else {
+        updateAttempts();
+        enteredPasscode = '';
+        $('.pass div').removeClass('show');
+      }
+    }
+  }
+
+  $('.keyboard div:not(.clear, .enter)').on('click', function() {
+    if (!$('.passcode').hasClass('locked')) {
+      if (enteredPasscode.length < 4) {
+        enteredPasscode += $(this).text();
+        $('.pass div:nth-child(' + enteredPasscode.length + ')').addClass('show');
+        handlePasscodeEntry();
+      }
+    }
+  });
+
+  $('.keyboard .clear').on('click', function() {
+    if (!$('.passcode').hasClass('locked')) {
+      if (enteredPasscode.length > 0) {
+        enteredPasscode = enteredPasscode.slice(0, -1);
+        $('.pass div:nth-child(' + (enteredPasscode.length + 1) + ')').removeClass('show');
+      }
+    }
+  });
+
+  $('.keyboard .enter').on('click', function() {
+    if (!$('.passcode').hasClass('locked')) {
+      handlePasscodeEntry();
+    }
+  });
+
+  // Check if lockout is active on page load
+  checkLockout();
+});
+$(document).ready(function() {
+  $(document).on('contextmenu', function(e) {
+    e.preventDefault();
+  });
+});
+
+</script>
+</body>
+</html>

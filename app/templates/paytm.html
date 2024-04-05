@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vending Machine Paytm Payment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+    .container {
+      max-width: 100%;
+      height: 100vh;
+      text-align: center;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      color: #000;
+      background-color: #FBFFF6;
+    }
+.spinner-border {
+      --bs-spinner-animation-speed: 2s;
+}
+#countdown {
+  font-size: 30px;
+  text-align: center;
+  margin-top: 10px;
+  color: #000;
+}
+
+.modal-confirm {		
+	color: #434e65;
+	width: 525px;
+}
+.modal-confirm .modal-content {
+	padding: 20px;
+	font-size: 16px;
+	border-radius: 5px;
+	border: none;
+}
+.modal-confirm .modal-header {
+	background: #47c9a2;
+	border-bottom: none;   
+	position: relative;
+	text-align: center;
+	margin: -20px -20px 0;
+	border-radius: 5px 5px 0 0;
+	padding: 35px;
+}
+.modal-confirm h4 {
+	text-align: center;
+	font-size: 36px;
+	margin: 10px 0;
+}
+.modal-confirm .form-control, .modal-confirm .btn {
+	min-height: 40px;
+	border-radius: 3px; 
+}
+.modal-confirm .close {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	color: #fff;
+	text-shadow: none;
+	opacity: 0.5;
+}
+.modal-confirm .close:hover {
+	opacity: 0.8;
+}
+.modal-confirm .icon-box {
+	color: #fff;		
+	width: 95px;
+	height: 95px;
+	display: inline-block;
+	border-radius: 50%;
+	z-index: 9;
+	border: 5px solid #fff;
+	padding: 15px;
+	text-align: center;
+}
+.modal-confirm .icon-box i {
+	font-size: 64px;
+	margin: -4px 0 0 -4px;
+}
+.modal-confirm.modal-dialog {
+	margin-top: 80px;
+}
+.modal-confirm .btn, .modal-confirm .btn:active {
+	color: #fff;
+	border-radius: 4px;
+	background: #eeb711 !important;
+	text-decoration: none;
+	transition: all 0.4s;
+	line-height: normal;
+	border-radius: 30px;
+	margin-top: 10px;
+	padding: 6px 20px;
+	border: none;
+}
+.modal-confirm .btn:hover, .modal-confirm .btn:focus {
+	background: #eda645 !important;
+	outline: none;
+}
+.modal-confirm .btn span {
+	margin: 1px 3px 0;
+	float: left;
+}
+.modal-confirm .btn i {
+	margin-left: 1px;
+	font-size: 20px;
+	float: right;
+}
+.trigger-btn {
+	display: inline-block;
+	margin: 100px auto;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  text-align: center;
+}
+
+.popup-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 400px;
+}
+
+.popup img {
+  width: 240px;
+  height: 180px;
+  margin-bottom: 5px;
+}
+
+.popup h2 {
+  font-size: 24px;
+  color: #00b300;
+}
+
+.popup p {
+  font-size: 16px;
+  margin-top: 10px;
+}
+</style>
+    <title>Paytm Payment</title>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+        <div class="text-center pb-3">
+          <div class="m-0">
+            <h5 style="color: red;">Order ID: {{order_id}}</h5>
+            <h6 class="mt-1">Pay via UPI using any app</h6>
+          </div>
+          <div class="m-0 p-0">
+            <img src="../static/paytm-logo.png" width="120" height="auto" alt="paytm-logo">
+            <img src="../static/phonepe-logo.png" width="170" height="auto" alt="paytm-logo">
+            <img src="../static/google-pay-logo.png" width="100" height="40" alt="paytm-logo">
+            <img src="../static/amazon_logo.png" width="auto" height="150" alt="paytm-logo">
+            <img src="../static/bhim_logo.png" width="120" height="auto" alt="paytm-logo">
+          </div>
+          <h4 style="color: red;"><i class="fa fa-rupee" style="font-size:22px;color:red"></i>{{ total_amount }}</h4>
+          <h3 class="m-3" style="color: #000;font-weight: 700;">FOVEO FRESH</h3>
+
+          <div class="">
+              <div class="col-12">
+                <img src="data:image/png;base64,{{ qr_data }}" alt="Paytm QR Code">
+              </div>
+              <div class="col-12">
+                  <div class="spinner-border text-dark m-3" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                  </div>
+                  <h1 id="countdown"></h1>
+          <form action="/status" method="get" id="paytm_data">
+      <input type="hidden" name="order_id" value="{{ order_id }}">
+    </form>
+    <div id="paymentSuccessPopup" class="popup">
+      <div class="popup-content">
+        <img src="../static/payment-done.gif" alt="Right Tick">
+        <h2>Payment Successful</h2>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/paytmchecksum/dist/PaytmChecksum.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sqlite3/sqlite3.js"></script>
+    <script>
+    // location.href = '/PaymentSuccess';
+    count = 0;
+    function confirmTransaction() {
+      console.log('************',$('#paytm_data').serialize())
+      // Make the AJAX request
+      $.ajax({
+        url: '/status',
+        method: 'GET',
+        data:$('#paytm_data').serialize(),
+        success: function(response) {
+          // Handle the response from the payment API
+          if (response.status === 'success') {
+            // Transaction confirmed
+            makePayment();
+            console.log('Transaction Successfull');
+            location.href = '/PaymentSuccess';
+          } else if (response.status === 'pending') {
+            // Transaction still pending, continue polling
+            count++;
+            if(count < 24)
+            {
+              console.log('Transaction pending, checking again in 5 seconds');
+              //confirmTransaction();// Poll every 5 seconds (5,000 milliseconds)
+              setTimeout(confirmTransaction, 5000);
+            }
+            else
+            {
+              console.log('Transaction failed')
+              location.href = '/PaymentFailure';
+            }
+          } else if (response.status === 'network_error') {
+            // Transaction failed or encountered an error
+            console.log('Network error failed');
+            location.href = '/network_error';
+          }
+          else {
+            // Transaction failed or encountered an error
+            console.log('Transaction failed');
+            location.href = '/PaymentFailure';
+          }
+        },
+        error: function() {
+          // Handle error case
+          console.log('Error occurred while confirming transaction');
+        }
+      });
+    }
+
+  const timeout = setInterval(() => {
+    confirmTransaction();
+    clearInterval(timeout); 
+  }, 20000); 
+
+  var countdownDuration = 3 * 60 * 1000; 
+  var startTime = new Date().getTime();
+  var endTime = startTime + countdownDuration;
+  var countdownTimer = setInterval(function() {
+  var now = new Date().getTime();
+  var remainingTime = endTime - now;
+  var minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+  var countdownElement = document.getElementById("countdown");
+  countdownElement.innerHTML = "0" + minutes + "m " + seconds + "s ";
+  if (remainingTime < 0) {
+    clearInterval(countdownTimer);
+    countdownElement.innerHTML = "EXPIRED";
+  }
+}, 1000);
+
+function makePayment() {
+  showPaymentSuccessPopup();
+}
+
+function showPaymentSuccessPopup() {
+  var popup = document.getElementById("paymentSuccessPopup");
+  popup.style.display = "block";
+  setTimeout(function() {
+    popup.style.display = "none";
+  }, 20000);
+}
+
+</script>
+
+</body>
+</html>
