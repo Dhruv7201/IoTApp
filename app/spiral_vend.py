@@ -102,4 +102,12 @@ class MultiVend(object):
         if self.device_stat:
             self.device_stat.is_ready = True
             self.device_stat.save()
-        return data
+
+        if self.final_item:
+            #             print("final item")
+            t = threading.Thread(target=blink_led, args=[push_led, ])
+            t.setDaemon(False)
+            t.start()
+        else:
+
+            return data
